@@ -1,25 +1,33 @@
-#pragma once
-#include "Coordoonees.hpp"
+#ifndef ENSCOORD_HPP
+#define ENSCOORD_HPP
+#include "Coordonate.hpp"
 #include <vector>
 #include <iostream>
 
 
 class EnsCoord{
+/*
+  this class is made for manage an set of coordonnates
+*/
     private:
-        std::vector<Coordoonnees> ens;
-        int position(Coordoonnees c);
+
+        std::vector<Coordonate> ens ;
+        int position(Coordonate c);
     public:
-        std::vector<Coordoonnees> getEns();
-        EnsCoord(std::vector<Coordoonnees> c);
-        bool in(Coordoonnees c);
-        bool add(Coordoonnees c);
-        void remove(Coordoonnees c);
+    
+        std::vector<Coordonate> getEns();
+        EnsCoord(std::vector<Coordonate> c);
+        bool in(Coordonate c);
+        bool add(Coordonate c);
+        void remove(Coordonate c);
         bool isEmpty();
         std::size_t size();
-        Coordoonnees getElementById(std::size_t i);
+        Coordonate getElementById(std::size_t i);
+        
 
 
 };
 
 
-std::ostream& operator<<(std::ostream& out , EnsCoord ens);
+std::ostream& operator<<(std::ostream& out ,  EnsCoord ens);
+#endif

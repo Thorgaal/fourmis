@@ -1,39 +1,30 @@
 #include "EnsCoord.hpp"
 #include <vector>
 #include <iostream>
-/*
-tester et faire les commentaires de cette class
+#include "Coordonate.hpp"
 
-
-
-*/
-
-using std::vector;
-
-std::vector<Coordoonnees> EnsCoord::getEns(){
-    return this->ens;
-}
-
-
-EnsCoord::EnsCoord(std::vector<Coordoonnees> e){
-    ens = e;
-}
-
-
-int EnsCoord::position(Coordoonnees c ){
+int EnsCoord::position(Coordonate c ){
     for(std::size_t i = 0; i<this->ens.size(); i++){
         if(this->ens[i] == c) return i;
     }
     return -1;
 }
+std::vector<Coordonate> EnsCoord::getEns() {
+    return this->ens;
+}
 
 
-bool EnsCoord::in(Coordoonnees c){
+    EnsCoord::EnsCoord(std::vector<Coordonate> e){  
+        this->ens = std::move(e);
+    }
+
+
+bool EnsCoord::in(Coordonate c){
     return this->position(c)!=-1;
 }
 
 
-bool EnsCoord::add(Coordoonnees c){
+bool EnsCoord::add(Coordonate c){
     if( this->position(c) == -1){
         return false;
     }
@@ -42,10 +33,10 @@ bool EnsCoord::add(Coordoonnees c){
 
 }
 
-void EnsCoord::remove(Coordoonnees c){
+void EnsCoord::remove(Coordonate c){
     int pos  = this->position(c);
     if(pos == -1){
-        throw ("Please to remove an existant coordoonate");
+        throw ("Please remove an existing coordinate");
     }
     this->ens.erase(this->ens.begin() + pos);
 
@@ -64,15 +55,14 @@ std::size_t EnsCoord::size(){
 
 }
 
-Coordoonnees EnsCoord::getElementById(std::size_t i){
+Coordonate EnsCoord::getElementById(std::size_t i){
     return this->ens[i];
 }
 
 // a bien tester
-std::ostream& operator<<(std::ostream& out , EnsCoord ens){
-    for(Coordoonnees cord:ens.getEns()){
+std::ostream& operator<<(std::ostream& out , EnsCoord ens)  {
+    for(Coordonate cord:ens.getEns()){
             out << cord << " ";
         }
     return out;
 }
-
