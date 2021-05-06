@@ -17,7 +17,7 @@ EnsCoord neighbor(Coordinate c){
     
 }
 Coordonate randC(EnsCoord c){
-    return rand %(c.getEns().size());
+    return c.getElementById(rand %(c.getEns().size()));
 }
 
 
