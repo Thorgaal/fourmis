@@ -3,6 +3,9 @@
 
 #include "../Ant/Ant.hpp"
 #include "Coordonate.hpp"
+#include <vector>
+
+
 
 class Case{
 	private:
@@ -11,8 +14,13 @@ class Case{
 		Coordonate *coord;
 	public:
 		Case(Coordonate c);
+        Case(Coordonate c, std::vector<bool> sP,Ant *a, Coordonate *c);
 		bool hasPhero() const;
 		bool hasSugar() const;
+        void pSugar();
+        void pPhero();
+        bool pOSugar();
+        bool pOPhero();
 		
 
 
