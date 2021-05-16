@@ -4,15 +4,16 @@
 
 class Coordonate{
     private:
-        static constexpr int gridSize = 20;
+        int gridSize;
         unsigned int col, lig;
 
     public:
-        Coordonate()= default;
-        Coordonate(int lig,int col);
+        Coordonate() = default;
+        Coordonate(int l,int c, int gSize =20);
         int tailleGrille(); 
         int getLig();
         int getCol();
+        int getSize() const;
 
         
 

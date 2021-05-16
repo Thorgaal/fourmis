@@ -1,38 +1,74 @@
 #include "Case.hpp"
-#include "../Ant/Ant.hpp"
+#include "../Ants/Ant.hpp"
 #include "Coordonate.hpp"
 #include <vector>
 #include <cstdlib>
+#include <cmath>
 
-
-Case::Case(Coordonate *c){
+Case::Case(Coordonate c){
     this->ant = NULL;
     this->coord = c;
     this->sugar = false;
-    this->phero = false;
+    this->pheroS = 0;
+    this->nest = false;
+    this->pheroN = 0;
 }
 
-Case::Case(Coordonate c, std::vector<bool> sP,Ant *a, Coordonate *c){
-    if(sP.size() != 2) throw ValueError("You have to pass an vector of size 2");
-    this->sugar = sP[0];
-    this->phero = sP[1];
-    this ant = a;
+Case::Case(Coordonate c, bool s,Ant *a, bool n){
+    this->sugar = s;
+    this->ant = a;
     this->coord = c;
+    this->nest = n;
+    this->pheroN = 0;
+    this->pheroS = 0;
+
 }
 
-bool Case::hasPhero(){
-    return this->phero;
+
+
+Coordonate Case::getCoord() const{
+    return this->coord;
 }
-bool Case::hasSugar(){
+
+
+int Case::getPheroS() const{
+    return this->pheroS;
+}
+
+int Case::getPheroN() const{
+    return this->pheroN;
+}
+
+int Case::getAntId() const{
+    if(this->ant!=NULL) return -1;
+    return this->ant->getId();
+}
+
+bool Case::hasNest() const{
+    return this->nest;
+}
+
+
+bool Case::isOnTheWayS() const{
+    return this->pheroS >0;
+}
+
+
+
+bool Case::hasSugar()const {
     return this->sugar;
+}
+
+Ant* Case::getAnt() const{
+    return this->ant;
 }
 
 void Case::pSugar(){
     this->sugar = true;
 }
 
-void Case::pPhero(){
-    this->phero = true;
+void Case::pPheroN(int intensity){
+    this->pheroN = intensity;
 }
 
 
@@ -43,20 +79,45 @@ bool Case::pOSugar(){
     }
     return false;
 }
-bool Case::pOPhero(){
-    if(this->phero){
-        this->phero = false;
+void Case::addAnt(Ant *a){
+    this->ant = a;
+}
+
+bool Case::pOAnt(){
+    if(this->ant!=NULL){
+        this->ant = NULL;
         return true;
     }
     return false;
+    
+}
+void Case::addPheroS(){
+    this->pheroS = this->maxPheroS;
+}
+
+void Case::evaporate(){
+    this->pheroS-= this->evaoration;
+}
+
+bool Case::isEmpty()const{ 
+    return (this->ant == NULL && !this->sugar && !this->nest);
 }
 
 
+void moveA(Ant *a, Case *c1, Case *c2){
+    if(a != c1->getAnt()) throw("you have to give the case where the ant is");
+    c1->pOAnt();
+    c2->addAnt(a);
 
-
-
-
-
-
+}
+int norme(Coordonate c){
+    return sqrt(c.getLig() * c.getLig() + c.getCol() *c.getCol());
+}
+int distancePoints(Coordonate c1,  Coordonate c2){
+    return abs(norme(c1)-norme(c2));
+}
+bool closerN(Case *c1, Case *c2,Case *nest){
+    return distancePoint(c1->getCoord(),nest->getCoord())>distancePoint(c2->getCoord(),nest->getCoord());
+}
 
 
