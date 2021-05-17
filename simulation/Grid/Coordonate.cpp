@@ -3,8 +3,8 @@
 #include <cmath>
 
 //Creating the coordonate verifying that it is in the grid
-Coordonate::Coordonate(int c,int l, int gSize = 20){
-
+Coordonate::Coordonate(int c,int l, int gSizes){
+    this->gridSize = gSizes;
     if(l>sqrt(this->gridSize) || c > sqrt(this->gridSize)){
              throw("You cannot create this Coordinate because it is out of the grid");
     }else if(c<1 || l <1){
@@ -33,12 +33,12 @@ int Coordonate::getSize() const{
 }
 
 std::ostream& operator<<(std::ostream& out, Coordonate c){
-    out << "(" << c.getCol() << "," << c.getLig() <<")" << std::endl;
+    out << "(" << c.getCol() << "," << c.getLig() <<")";
     return out;
 }
-bool operator==(Coordonate c1,Coordonate c2){
+bool operator ==(Coordonate c1,Coordonate c2){
     return (c1.getCol() == c2.getCol() && c1.getLig() == c2.getLig());
 }
 bool operator !=(Coordonate c1,Coordonate c2){
-    return (c1.getCol() != c2.getCol() && c1.getLig() != c2.getLig());
+    return (c1.getCol() != c2.getCol() || c1.getLig() != c2.getLig());
 }

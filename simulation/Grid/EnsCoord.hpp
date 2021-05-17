@@ -15,8 +15,8 @@ class EnsCoord{
         int position(Coordonate c);
     public:
         EnsCoord();
-        std::vector<Coordonate> getEns();
         EnsCoord(std::vector<Coordonate> c);
+        std::vector<Coordonate> getEns();
         bool in(Coordonate c);
         bool add(Coordonate c);
         void remove(Coordonate c);

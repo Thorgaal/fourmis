@@ -8,7 +8,9 @@ EnsCoord::EnsCoord(){
     this->ens = std::vector<Coordonate>(0);
 }
 
-
+EnsCoord::EnsCoord(std::vector<Coordonate> e){  
+    this->ens = std::move(e);
+}
 
 int EnsCoord::position(Coordonate c ){
     for(std::size_t i = 0; i<this->ens.size(); i++){
@@ -16,20 +18,14 @@ int EnsCoord::position(Coordonate c ){
     }
     return -1;
 }
+
 std::vector<Coordonate> EnsCoord::getEns() {
     return this->ens;
 }
 
-
-    EnsCoord::EnsCoord(std::vector<Coordonate> e){  
-        this->ens = std::move(e);
-    }
-
-
 bool EnsCoord::in(Coordonate c){
     return this->position(c)!=-1;
 }
-
 
 bool EnsCoord::add(Coordonate c){
     if( this->position(c) == -1){
@@ -47,9 +43,8 @@ void EnsCoord::remove(Coordonate c){
     }
   this->ens.erase(this->ens.begin() + pos);
 
-    
-
 }
+
 bool EnsCoord::isEmpty(){
     return this->ens.empty();
 }

@@ -9,7 +9,7 @@ class Coordonate{
 
     public:
         Coordonate() = default;
-        Coordonate(int l,int c, int gSize =20);
+        Coordonate(int l,int c, int gSize=20);
         int tailleGrille(); 
         int getLig();
         int getCol();
