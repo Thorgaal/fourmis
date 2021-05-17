@@ -99,6 +99,10 @@ void Case::addPheroS(){
     this->pheroS = this->maxPheroS;
 }
 
+void Case::addNest(){
+    this->nest = true;
+}
+
 void Case::evaporate(){
     this->pheroS-= this->evaoration;
 }

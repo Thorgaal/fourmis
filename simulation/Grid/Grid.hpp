@@ -24,10 +24,15 @@ class Grid{
         Grid(int side);
         Case getCase(int col, int lig) const;
         void putCase(Case c);
-        void linearisePheroN();     
+        void linearisePheroN();    
+        void evaporation(); 
 
 };
 
+void placeNest(Grid &g, EnsCoord c);
+void placeSugar(Grid &g, EnsCoord c);
+void placeAnts(Grid &g,std::vector<Ant *> a);
+void iniGrid(Grid &g, EnsCoord coordN, EnsCoord coordS, std::vector<Ant *> a);
 
 
 

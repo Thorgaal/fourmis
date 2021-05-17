@@ -107,10 +107,41 @@ void Grid::linearisePheroN(){
     }
 
 }
+void Grid::evaporation(){
+    for(int i = 0; i<this->cases.size();i++){
+        this->cases[i].evaporate();
+    }
+}
 
+void placeNest(Grid &g, EnsCoord c){
+    for(Coordonate ca : c.getEns()){
+        Case modifie = g.getCase(ca.getCol(),ca.getLig());
+        modifie.addNest();
+        g.putCase(modifie);
+    }
+}
 
+void placeSugar(Grid &g, EnsCoord c){
+    for(Coordonate ca : c.getEns()){
+        Case modifie = g.getCase(ca.getCol(),ca.getLig());
+        modifie.pSugar();
+        g.putCase(modifie);
+    }
+}
 
+void placeAnts(Grid &g,std::vector<Ant *> a){
+    for(Ant *ant : a){
+        Case modifie = g.getCase(ant->getCoord().getCol(),ant->getCoord().getLig());
+        modifie.addAnt(ant);
+        g.putCase(modifie);
+    }
+}
 
-
+void iniGrid(Grid &g, EnsCoord coordN, EnsCoord coordS, std::vector<Ant *> a){
+    placeNest(g,coordN);
+    placeSugar(g,coordS);
+    placeAnts(g,a);
+    g.linearisePheroN();
+}
 
 

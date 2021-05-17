@@ -9,7 +9,7 @@
 
 class Case{
 	private:
-		int maxPheroS = 100,evaoration = 1;
+		int maxPheroS = 255,evaoration = 5;
 		bool sugar,nest;
 		int pheroS;
 		float pheroN,maxPheroN = 1;
@@ -35,6 +35,7 @@ class Case{
         void pPheroN(float intensity);
 		void addAnt(Ant *a);
 		void addPheroS();
+		void addNest();
 		//for put off
         bool pOSugar();
 		bool pOAnt();
