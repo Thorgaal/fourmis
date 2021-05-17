@@ -1,7 +1,7 @@
 CC = g++
 CFLAGS = -std=c++11 -Wall
 GRID = simulation/Grid
-ANTS = simulation/ants
+ANTS = simulation/Ants
 
 all:main
 
@@ -14,8 +14,8 @@ main.o: main.cpp
 run_test: Test
 	./Test  
 
-Test: Test.o EnsCoord.o Coordonate.o
-	$(CC) $(CFLAGS) -o Test Test.o EnsCoord.o Coordonate.o
+Test: Test.o EnsCoord.o Coordonate.o Ant.o
+	$(CC) $(CFLAGS) -o Test Test.o EnsCoord.o Coordonate.o Ant.o
 
 Test.o: $(GRID)/Test.cpp
 	$(CC) $(CFLAGS) -c $(GRID)/Test.cpp -o Test.o
@@ -25,6 +25,9 @@ Coordonate.o: $(GRID)/Coordonate.hpp $(GRID)/Coordonate.cpp
     
 EnsCoord.o: $(GRID)/EnsCoord.hpp $(GRID)/EnsCoord.cpp
 	$(CC) $(CFLAGS) -c $(GRID)/EnsCoord.cpp -o EnsCoord.o
+    
+Ant.o: $(ANTS)/Ant.hpp $(ANTS)/Ant.cpp
+	$(CC) $(CFLAGS) -c $(ANTS)/Ant.cpp -o Ant.o
 
 
 clean:

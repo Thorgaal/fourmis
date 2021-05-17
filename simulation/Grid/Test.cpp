@@ -4,6 +4,7 @@
 #include "Coordonate.hpp"
 #include <vector>
 #include "EnsCoord.hpp"
+#include "../Ants/Ant.hpp"
 
 TEST_CASE("Coordonate Test"){
     //test of the assignement of the coordonates
@@ -31,6 +32,8 @@ TEST_CASE("Coordonate Test"){
     CHECK_FALSE(c!=c1); 
         
 }
+
+
 TEST_CASE("EnsCoord Test"){
     EnsCoord ens1 = EnsCoord{std::vector<Coordonate>{Coordonate{1,2},Coordonate{2,2}}};
     
@@ -64,4 +67,18 @@ TEST_CASE("EnsCoord Test"){
     CHECK(ens1.size() == 2);
     CHECK(ens1.getElementById(0) == Coordonate{2,2}); 
     CHECK(ens1.getElementById(1) == Coordonate{1,3});
+}
+
+
+TEST_CASE("Ant Test"){
+    //test constructor, getCoord and getId
+    Ant Ant1 = Ant{Coordonate{1,2},4};
+    CHECK(Ant1.getCoord() == Coordonate{1,2});
+    CHECK(Ant1.getId() == 4);
+    
+    //test wearSug, takeSugar and laySugar
+    Ant1.takeSugar();
+    CHECK(Ant1.wearSug() == true);
+    Ant1.laySugar();
+    CHECK(Ant1.wearSug() == false);
 }
