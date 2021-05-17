@@ -40,7 +40,7 @@ float Case::getPheroN() const{
 }
 
 int Case::getAntId() const{
-    if(this->ant!=NULL) return -1;
+    if(this->ant==NULL) return -1;
     return this->ant->getId();
 }
 
@@ -122,7 +122,7 @@ void Case::replace(Case c){
 
 
 void moveA(Ant *a, Case *c1, Case *c2){
-    if(a != c1->getAnt()) throw("you have to give the case where the ant is");
+    if(a != c1->getAnt()) throw std::string("you have to give the case where the ant is");
     c1->pOAnt();
     c2->addAnt(a);
 
@@ -130,11 +130,13 @@ void moveA(Ant *a, Case *c1, Case *c2){
 int norme(Coordonate c){
     return sqrt(c.getLig() * c.getLig() + c.getCol() *c.getCol());
 }
-int distancePoints(Coordonate c1,  Coordonate c2){
-    return abs(norme(c1)-norme(c2));
+// a modif
+int distancePoint(Coordonate c1,  Coordonate c2){
+    return sqrt((c1.getLig()-c2.getLig()) * (c1.getLig()-c2.getLig()) + (c1.getCol()-c2.getCol()) *(c1.getCol()-c2.getCol()));
 }
 bool closerN(Case *c1, Case *c2,Case *nest){
-    return distancePoint(c1->getCoord(),nest->getCoord())>distancePoint(c2->getCoord(),nest->getCoord());
+    if(nest->hasNest() == false) throw std::string("you need to have a nest on this case");
+    return distancePoint(c1->getCoord(),nest->getCoord())<=distancePoint(c2->getCoord(),nest->getCoord());
 }
 
 

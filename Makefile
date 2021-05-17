@@ -14,8 +14,8 @@ main.o: main.cpp
 run_test: Test
 	./Test  
 
-Test: Test.o EnsCoord.o Coordonate.o Ant.o
-	$(CC) $(CFLAGS) -o Test Test.o EnsCoord.o Coordonate.o Ant.o
+Test: Test.o EnsCoord.o Coordonate.o Ant.o Case.o
+	$(CC) $(CFLAGS) -o Test Test.o EnsCoord.o Coordonate.o Ant.o Case.o
 
 Test.o: $(GRID)/Test.cpp
 	$(CC) $(CFLAGS) -c $(GRID)/Test.cpp -o Test.o
@@ -28,7 +28,9 @@ EnsCoord.o: $(GRID)/EnsCoord.hpp $(GRID)/EnsCoord.cpp
     
 Ant.o: $(ANTS)/Ant.hpp $(ANTS)/Ant.cpp
 	$(CC) $(CFLAGS) -c $(ANTS)/Ant.cpp -o Ant.o
-
+    
+Case.o: $(GRID)/Case.hpp $(GRID)/Case.cpp
+	$(CC) $(CFLAGS) -c $(GRID)/Case.cpp -o Case.o
 
 clean:
 	rm -rf *o

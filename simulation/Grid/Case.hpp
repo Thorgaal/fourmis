@@ -47,7 +47,7 @@ class Case{
 		bool isEmpty() const;
 
 };
-void moveA(Ant a, Case c1, Case c2) ;
+void moveA(Ant *a, Case *c1, Case *c2) ;
 int norme(Coordonate c);
 int distancePoint(Coordonate c1,  Coordonate c2);
 bool closerN(Case *c1, Case *c2,Case *nest);

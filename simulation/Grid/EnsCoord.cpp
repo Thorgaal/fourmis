@@ -50,7 +50,7 @@ bool EnsCoord::add(Coordonate c){
 void EnsCoord::remove(Coordonate c){
     int pos  = this->position(c);
     if(pos == -1){
-        throw ("Please remove an existing coordinate");
+        throw std::string ("Please remove an existing coordinate");
     }
   this->ens.erase(this->ens.begin() + pos);
 

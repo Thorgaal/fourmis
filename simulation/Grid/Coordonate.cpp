@@ -6,9 +6,9 @@
 Coordonate::Coordonate(int c,int l, int gSizes){
     this->gridSize = gSizes;
     if(l>sqrt(this->gridSize) || c > sqrt(this->gridSize)){
-             throw("You cannot create this Coordinate because it is out of the grid");
+             throw std::string("You cannot create this Coordinate because it is out of the grid");
     }else if(c<1 || l <1){
-        throw("You cannot create  coordinates under (1,1)");
+        throw std::string("You cannot create  coordinates under (1,1)");
     }else{
         this->col = c;
         this->lig  = l;
