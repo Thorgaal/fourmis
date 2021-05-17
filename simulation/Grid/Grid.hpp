@@ -9,17 +9,25 @@
 
 int min(int a, int b);
 
+bool isInG(int c,int l, int s);
+EnsCoord neighbor(Coordonate *c);
+Coordonate randC(EnsCoord ens);
+float getMaxPhero(std::vector<Case> c); 
 class Grid{
     private:
         std::vector<Case> cases;
+        //side is for simplfy calculs
+        int side;
+        int getId(Case c);
     public:
-        Grid(int size);
+        //the side is the width and height
+        Grid(int side);
         Case getCase(int col, int lig) const;
+        void putCase(Case c);
+        void linearisePheroN();     
 
 };
 
-EnsCoord neighbor(Coordonate *c);
-Coordonate randC(EnsCoord ens);
 
 
 

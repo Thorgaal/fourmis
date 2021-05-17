@@ -35,7 +35,7 @@ int Case::getPheroS() const{
     return this->pheroS;
 }
 
-int Case::getPheroN() const{
+float Case::getPheroN() const{
     return this->pheroN;
 }
 
@@ -63,11 +63,15 @@ Ant* Case::getAnt() const{
     return this->ant;
 }
 
+float Case::getMaxPheroN(){
+    return this->maxPheroN;
+}
+
 void Case::pSugar(){
     this->sugar = true;
 }
 
-void Case::pPheroN(int intensity){
+void Case::pPheroN(float intensity){
     this->pheroN = intensity;
 }
 
@@ -101,6 +105,15 @@ void Case::evaporate(){
 
 bool Case::isEmpty()const{ 
     return (this->ant == NULL && !this->sugar && !this->nest);
+}
+
+void Case::replace(Case c){
+    this->sugar = c.hasSugar();
+    this->nest = c.hasNest();
+    this->pheroN = c.getPheroN();
+    this->pheroS = c.getPheroS();
+    this->coord = c.getCoord();
+    this->ant = c.getAnt();
 }
 
 

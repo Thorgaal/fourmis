@@ -9,9 +9,10 @@
 
 class Case{
 	private:
-		int maxPheroS = 100, maxPheroN = 100,evaoration = 1;
+		int maxPheroS = 100,evaoration = 1;
 		bool sugar,nest;
-		int pheroN,pheroS;
+		int pheroS;
+		float pheroN,maxPheroN = 1;
 		Ant *ant;
 		Coordonate coord;
 	public:
@@ -22,21 +23,23 @@ class Case{
 		bool hasSugar() const;
 		Coordonate getCoord() const;
 		int getPheroS() const ;
-		int getPheroN() const;
+		float getPheroN() const;
 		int getAntId() const ;	
 		bool hasNest() const;
 		bool isOnTheWayS() const;
 		Ant* getAnt() const;
+		float getMaxPheroN();
 		//setters
 		//for add		
         void pSugar();
-        void pPheroN(int intensity);
+        void pPheroN(float intensity);
 		void addAnt(Ant *a);
 		void addPheroS();
 		//for put off
         bool pOSugar();
 		bool pOAnt();
 		void evaporate();
+		void replace(Case c);
 
 		//check if the case is empty
 
