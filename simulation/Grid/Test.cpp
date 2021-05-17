@@ -149,5 +149,6 @@ TEST_CASE("Case Test"){
     CHECK_THROWS_AS(closerN(&Case1,&Case2,&Case3),std::string);
     Case3.addNest();
     CHECK(closerN(&Case1,&Case2,&Case3));
+    CHECK_FALSE(closerN(&Case2,&Case1,&Case3));
     
 }
