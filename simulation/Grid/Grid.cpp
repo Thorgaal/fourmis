@@ -19,12 +19,12 @@ bool isInG(int c,int l, int s){
 }
 
 EnsCoord neighbor(Coordonate *c){
-    int imin = std::max(c->getLig()-1,0), imax = min(c->getLig()-1,c->getSize());
-    int jmin = std::max(c->getCol()-1,0),jmax = min(c->getCol(), c->getSize()) ;
+    int imin = std::max(c->getLig()-1,1), imax = min(c->getLig()+1,c->getSize());
+    int jmin = std::max(c->getCol()-1,1),jmax = min(c->getCol()+1, c->getSize()) ;
     EnsCoord ens;
-    for( int i = imin; i<imax; i++){
-        for(int j = jmin; j<jmax; j++){
-            if(i!=c->getLig() && j!=c->getCol() && isInG(i,j,c->getSize())) ens.add(Coordonate{i,j,c->getSize()});
+    for( int i = imin; i<=imax; i++){
+        for(int j = jmin; j<=jmax; j++){
+            if((i!=c->getLig() || j!=c->getCol()) && isInG(i,j,c->getSize())) ens.add(Coordonate{i,j,c->getSize()});
         }
     }
     return ens;
@@ -49,7 +49,7 @@ float getMaxPhero(std::vector<Case> c){
 
 int Grid::getId(Case c){
     Coordonate c1 = c.getCoord();
-    for(int i = 0; i< cases.size();i++){
+    for(int i = 0; i< int(cases.size());i++){
         if(cases[i].getCoord() == c1 ){
             return i;
         }
@@ -63,16 +63,16 @@ Grid::Grid(int s){
     this->side = s;
     this->cases = std::vector<Case>(side*side);
     int compteur = 0;
-    for(int  i =0;i<side;i++){
-        for(int j = 0 ; j < side; j++){
-            this->cases[compteur] = Case{Coordonate{(j%side) +1,i,side}};
+    for(int  i =1;i<=side;i++){
+        for(int j = 1 ; j <= side; j++){
+            this->cases[compteur] = Case{Coordonate{j,i,side*side}};
             compteur++;
         }
     }
 }
 
 Case Grid::getCase(int col,int lig) const{
-    Coordonate c = Coordonate{col,lig};
+    Coordonate c = Coordonate{col,lig,this->side*this->side};
     for(Case ci : this->cases){
         if(ci.getCoord() == c ){
             return ci;
@@ -89,26 +89,29 @@ void Grid::putCase(Case c){
 }
 
 void Grid::linearisePheroN(){
-    for(int i=0;i<this->cases.size();i++){
+    for(int i=1;i<int(this->cases.size());i++){
         if(cases[i].hasNest()) cases[i].pPheroN(cases[i].getMaxPheroN()); 
         else cases[i].pPheroN(0);
     }
-    for(int i =0; i<this->side; i++){
-        for(int j =0; j<this->cases.size();j++){
-            if(cases[j].getPheroN()<1){
-                EnsCoord around = neighbor(&cases[i].getCoord());
+    
+    for(int h =0; h<int(this->side);h++){
+        for(int i = 0; i< int(this->side*this->side);i++){
+            if(cases[i].getPheroN()<1){
+                Coordonate *casecordp;
+                Coordonate casecord = this->cases[i].getCoord();
+                casecordp = &casecord;
+                EnsCoord around = neighbor(casecordp);
                 std::vector<Case> c = std::vector<Case>(around.getEns().size());
-                for(int k =0; k<c.size();k++){
-                    c[0] = this->getCase(around.getElementById(k).getCol(),around.getElementById(k).getLig());
+                for(int k =0; k<int(c.size());k++){
+                    c[k] = this->getCase(around.getEns()[k].getCol(),around.getEns()[k].getLig());
                 }
-                cases[j].pPheroN(getMaxPhero(c) - 1/this->side);
+                cases[i].pPheroN(std::max(getMaxPhero(c) - 1/float(this->side),0.0f));
             }
         }
     }
-
 }
 void Grid::evaporation(){
-    for(int i = 0; i<this->cases.size();i++){
+    for(int i = 0; i<int(this->cases.size());i++){
         this->cases[i].evaporate();
     }
 }

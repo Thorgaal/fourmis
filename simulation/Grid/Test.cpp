@@ -6,16 +6,17 @@
 #include "EnsCoord.hpp"
 #include "../Ants/Ant.hpp"
 #include "Case.hpp"
+#include "Grid.hpp"
 
 TEST_CASE("Coordonate Test"){
-    //test of the assignement of the coordonates
+    //Test of the assignement of the coordonates
     Coordonate c = Coordonate{1,1};
     CHECK(c.getLig() == 1);
     CHECK(c.getCol() == 1);
     CHECK(c.getSize() == 20);
     //CHECK_THROWS_AS(Coordonate{1,0},std::string);
     
-    //test of ==, != and <<
+    //Test of ==, != and <<
     CHECK(Coordonate{1,1} == Coordonate{1,1});
     CHECK_FALSE(Coordonate{1,1} != Coordonate{1,1});
     CHECK_FALSE(Coordonate{1,1} == Coordonate{1,2});
@@ -26,12 +27,15 @@ TEST_CASE("Coordonate Test"){
     ch<<Coordonate{1,1};
     CHECK(ch.str() == "(1,1)"); 
     
-    //test of the reassignement of the coordonates
+    //Test of the reassignement of the coordonates
     Coordonate c1;
     c1 = c;
     CHECK(c1==c1);
     CHECK_FALSE(c!=c1); 
-        
+    
+    //Test with big values
+    Coordonate c2 = Coordonate{5,5,100};
+    CHECK(c2.getSize() == 100);
 }
 
 
@@ -149,6 +153,143 @@ TEST_CASE("Case Test"){
     CHECK_THROWS_AS(closerN(&Case1,&Case2,&Case3),std::string);
     Case3.addNest();
     CHECK(closerN(&Case1,&Case2,&Case3));
-    CHECK_FALSE(closerN(&Case2,&Case1,&Case3));
+    CHECK_FALSE(closerN(&Case2,&Case1,&Case3));   
+}
+
+
+TEST_CASE("Grid Test"){
+    //Test min
+    CHECK(min(-1,1) == -1);
+    CHECK(min(15,0) == 0);
+    CHECK(min(1,1) == 1);
     
+    //Test neighbor
+    Coordonate *c;
+    Coordonate cval = Coordonate{1,1};
+    c = &cval;
+    EnsCoord ensc = neighbor(c);
+    CHECK(ensc.size() == 3);
+    CHECK(ensc.in(Coordonate{1,2}));   
+    CHECK(ensc.in(Coordonate{2,1}));
+    CHECK(ensc.in(Coordonate{2,2}));
+    
+    cval = Coordonate{4,4,16};
+    ensc = neighbor(c);
+    CHECK(ensc.size() == 3);
+    CHECK(ensc.in(Coordonate{3,3,16}));   
+    CHECK(ensc.in(Coordonate{3,4,16}));
+    CHECK(ensc.in(Coordonate{4,3,16}));
+    //CHECK_FALSE(ensc.in(Coordonate{4,3}));
+    
+    cval = Coordonate{3,3};
+    ensc = neighbor(c);
+    CHECK(ensc.size() == 8);
+    CHECK(ensc.in(Coordonate{2,2}));   
+    CHECK(ensc.in(Coordonate{2,3}));
+    CHECK(ensc.in(Coordonate{2,4}));
+    CHECK(ensc.in(Coordonate{3,2}));   
+    CHECK(ensc.in(Coordonate{3,4}));
+    CHECK(ensc.in(Coordonate{4,2}));
+    CHECK(ensc.in(Coordonate{4,3}));   
+    CHECK(ensc.in(Coordonate{4,4}));
+    
+    //Test randC
+    CHECK(ensc.in(randC(ensc)));   
+    CHECK(ensc.in(randC(ensc))); 
+    CHECK(ensc.in(randC(ensc)));
+    
+    //Test class Grid
+    Grid gri = Grid(10);
+    
+    //Test placeNest and getCase
+    placeNest(gri,EnsCoord{std::vector<Coordonate>{Coordonate{3,3,100},Coordonate{5,5,100}}});
+    CHECK(gri.getCase(3,3).hasNest());
+    CHECK(gri.getCase(5,5).hasNest());
+    for(int x = 1; x<=5;x++){
+        for(int y = 1; y<=5;y++){
+            if(not((x == 3 && y == 3) || (x == 5 && y == 5))) CHECK_FALSE(gri.getCase(x,y).hasNest());
+        }
+    }
+    
+    //Test placeSugar and getCase
+    placeSugar(gri,EnsCoord{std::vector<Coordonate>{Coordonate{2,3,100},Coordonate{4,5,100}}});
+    CHECK(gri.getCase(2,3).hasSugar());
+    CHECK(gri.getCase(4,5).hasSugar());
+    for(int x = 1; x<=5;x++){
+        for(int y = 1; y<=5;y++){
+            if(not((x == 2 && y == 3) || (x == 4 && y == 5))) CHECK_FALSE(gri.getCase(x,y).hasSugar());
+        }
+    }
+    
+    //Test placeAnt and getCase
+    Ant *pa1;
+    Ant *pa2;
+    Ant a1 = Ant{Coordonate{7,4,100},0};
+    Ant a2 = Ant{Coordonate{3,6,100},1};
+    pa1 = &a1;
+    pa2 = &a2;
+    placeAnts(gri,std::vector<Ant*>{pa1,pa2});
+    CHECK(gri.getCase(7,4).getAntId() == 0);
+    CHECK(gri.getCase(3,6).getAntId() == 1);
+    for(int x = 1; x<=5;x++){
+        for(int y = 1; y<=5;y++){
+            if(not((x == 7 && y == 4) || (x == 3 && y == 6))) CHECK(gri.getCase(x,y).getAntId() == -1);
+        }
+    }
+    
+    //Test evaporation and putCase
+    Case modifie1 = gri.getCase(6,7);
+    Case modifie2 = gri.getCase(8,9);
+    modifie1.addPheroS();
+    modifie2.addPheroS();
+    gri.putCase(modifie1);
+    gri.putCase(modifie2);
+    CHECK(gri.getCase(6,7).getPheroS() == 255);
+    CHECK(gri.getCase(8,9).getPheroS() == 255);
+    gri.evaporation();
+    CHECK(gri.getCase(6,7).getPheroS() == 250);
+    CHECK(gri.getCase(8,9).getPheroS() == 250);
+    
+    //Test constructeur
+    gri = Grid(10); 
+    for(int x = 1; x<=5;x++){
+        for(int y = 1; y<=5;y++){
+            CHECK_FALSE(gri.getCase(x,y).hasNest());
+            CHECK_FALSE(gri.getCase(x,y).hasSugar());
+            CHECK(gri.getCase(x,y).getAntId() == -1);
+        }
+    }
+    
+    //Test linearisePheroN
+    placeNest(gri,EnsCoord{std::vector<Coordonate>{Coordonate{5,5,100}}});
+    gri.linearisePheroN();
+    for(int i = 0; i<4;i++) CHECK(gri.getCase(5-i,5).getPheroN() > gri.getCase(5-i-1,5).getPheroN());
+    for(int i = 0; i<5;i++) CHECK(gri.getCase(5+i,5).getPheroN() > gri.getCase(5+i+1,5).getPheroN());
+    for(int i = 0; i<4;i++) CHECK(gri.getCase(5,5-i).getPheroN() > gri.getCase(5,5-i-1).getPheroN());
+    for(int i = 0; i<4;i++) CHECK(gri.getCase(5,5+i).getPheroN() > gri.getCase(5,5+i+1).getPheroN());
+    
+    //Test iniGrid
+    gri = Grid(10);
+    iniGrid(gri, EnsCoord{std::vector<Coordonate>{Coordonate{3,3,100},Coordonate{5,5,100}}},EnsCoord{std::vector<Coordonate>{Coordonate{2,3,100},Coordonate{4,5,100}}}, std::vector<Ant*>{pa1,pa2});
+    CHECK(gri.getCase(3,3).hasNest());
+    CHECK(gri.getCase(5,5).hasNest());
+    for(int x = 1; x<=5;x++){
+        for(int y = 1; y<=5;y++){
+            if(not((x == 3 && y == 3) || (x == 5 && y == 5))) CHECK_FALSE(gri.getCase(x,y).hasNest());
+        }
+    }
+    CHECK(gri.getCase(2,3).hasSugar());
+    CHECK(gri.getCase(4,5).hasSugar());
+    for(int x = 1; x<=5;x++){
+        for(int y = 1; y<=5;y++){
+            if(not((x == 2 && y == 3) || (x == 4 && y == 5))) CHECK_FALSE(gri.getCase(x,y).hasSugar());
+        }
+    }
+    CHECK(gri.getCase(7,4).getAntId() == 0);
+    CHECK(gri.getCase(3,6).getAntId() == 1);
+    for(int x = 1; x<=5;x++){
+        for(int y = 1; y<=5;y++){
+            if(not((x == 7 && y == 4) || (x == 3 && y == 6))) CHECK(gri.getCase(x,y).getAntId() == -1);
+        }
+    }
 }

@@ -14,7 +14,7 @@ class Coordonate{
         Coordonate() = default;
         
         // constructor 
-        Coordonate(int l,int c, int gSize=20);
+        Coordonate(int c,int l, int gSize=20);
     
         // gives the size of the grid
         int tailleGrille(); 
