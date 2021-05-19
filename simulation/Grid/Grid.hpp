@@ -26,7 +26,8 @@ class Grid{
         void putCase(Case c);
         void linearisePheroN();    
         void evaporation(); 
-
+        
+        int getSide();
 };
 
 void placeNest(Grid &g, EnsCoord c);

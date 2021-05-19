@@ -116,6 +116,10 @@ void Grid::evaporation(){
     }
 }
 
+int Grid::getSide(){
+    return side;
+}
+
 void placeNest(Grid &g, EnsCoord c){
     for(Coordonate ca : c.getEns()){
         Case modifie = g.getCase(ca.getCol(),ca.getLig());
