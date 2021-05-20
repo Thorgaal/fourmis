@@ -115,13 +115,23 @@ void Grid::evaporation(){
         this->cases[i].evaporate();
     }
 }
+void Grid::setNest(Case n){
+    this->nest = n;
+}
 
 void placeNest(Grid &g, EnsCoord c){
     for(Coordonate ca : c.getEns()){
         Case modifie = g.getCase(ca.getCol(),ca.getLig());
         modifie.addNest();
+        g.setNest(modifie.getCoord());
         g.putCase(modifie);
     }
+}
+Case Grid::getNest() const{
+    return this->nest;
+}
+std::vector<Case> Grid::getCases() const{
+    return this->cases;
 }
 
 void placeSugar(Grid &g, EnsCoord c){

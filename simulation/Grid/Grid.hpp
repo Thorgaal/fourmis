@@ -18,7 +18,9 @@ class Grid{
         std::vector<Case> cases;
         //side is for simplfy calculs
         int side;
+        Case nest;
         int getId(Case c);
+        
     public:
         //the side is the width and height
         Grid(int side);
@@ -26,6 +28,9 @@ class Grid{
         void putCase(Case c);
         void linearisePheroN();    
         void evaporation(); 
+        void setNest(Case nest);
+        Case getNest() const;
+        std::vector<Case> getCases() const;
 
 };
 
