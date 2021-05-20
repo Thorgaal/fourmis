@@ -1,10 +1,10 @@
 #include "Ant.hpp"
-#include "../Coordonate.hpp"
+#include "../Grid/Coordonate.hpp"
 Ant::Ant(Coordonate c, int ind){
 	this->coord = c;
 	this->id = ind;
 }
-Coordonnate Ant::getCoord() const{
+Coordonate Ant::getCoord() const{
 	return this->coord;
 }
 

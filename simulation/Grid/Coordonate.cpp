@@ -1,17 +1,18 @@
 #include "Coordonate.hpp"
 #include <iostream>
+#include <cmath>
 
 //Creating the coordonate verifying that it is in the grid
-Coordonate::Coordonate(int col,int lig){
-
-    if(lig>=this->gridSize && col >= this->gridSize){
-            throw("You cannot create this Coordinate because it is out of the grid");
-    }else if(lig<0 && col <0){
-        throw("You cannot create negative coordinates");
+Coordonate::Coordonate(int c,int l, int gSizes){
+    this->gridSize = gSizes;
+    if(l>sqrt(this->gridSize) || c > sqrt(this->gridSize)){
+             throw std::string("You cannot create this Coordinate because it is out of the grid");
+    }else if(c<1 || l <1){
+        throw std::string("You cannot create  coordinates under (1,1)");
+    }else{
+        this->col = c;
+        this->lig  = l;
     }
-    this->x = col;
-    this->y = lig;
-
 }
 int Coordonate::tailleGrille(){
     return this->gridSize;
@@ -22,16 +23,22 @@ int Coordonate::getLig(){
     return this->lig;
 }
 int Coordonate::getCol(){
-    return this->Col;
+    return this->col;
+}
+
+
+
+int Coordonate::getSize() const{
+    return this->gridSize;
 }
 
 std::ostream& operator<<(std::ostream& out, Coordonate c){
-    out << "(" << c.getX() << "," << c.getY() <<")" << std::endl;
+    out << "(" << c.getCol() << "," << c.getLig() <<")";
     return out;
 }
-bool operator==(Coordonate c1,Coordonate c2){
-    return (c1.getX() == c2.getX() && c1.getY() == c2.getY());
+bool operator ==(Coordonate c1,Coordonate c2){
+    return (c1.getCol() == c2.getCol() && c1.getLig() == c2.getLig());
 }
 bool operator !=(Coordonate c1,Coordonate c2){
-    return (c1.getX() != c2.getX() && c1.getY() != c2.getY());
+    return (c1.getCol() != c2.getCol() || c1.getLig() != c2.getLig());
 }

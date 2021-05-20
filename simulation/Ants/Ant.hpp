@@ -1,16 +1,16 @@
 #ifndef ANT_HPP
 #define  ANT_HPP
 
-#include "../Coordonate.hpp"
+#include "../Grid/Coordonate.hpp"
 
-class Ant{
+class  Ant{
 	private:
 		bool sugar;
 		Coordonate coord;
 		int id;
 	public:	
 		Ant(Coordonate c, int ind);
-		Coordoonate getCoord() const;
+		Coordonate getCoord() const;
 		int getId() const;
 		bool wearSug() const;
 		void takeSugar() ;
