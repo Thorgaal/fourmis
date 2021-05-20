@@ -7,7 +7,6 @@ Ant::Ant(Coordonate c, int ind){
 Coordonate Ant::getCoord() const{
 	return this->coord;
 }
-
 int Ant::getId() const{
 	return this->id;
 }
@@ -20,5 +19,9 @@ void Ant::takeSugar(){
 }
 void Ant::laySugar(){
 	this->sugar = false;
+}
+
+void Ant::move(Coordonate c){
+	this->coord =c;
 }
 	

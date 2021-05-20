@@ -15,6 +15,7 @@ class  Ant{
 		bool wearSug() const;
 		void takeSugar() ;
 		void laySugar();
+		void move(Coordonate c);
 		
 		
 		

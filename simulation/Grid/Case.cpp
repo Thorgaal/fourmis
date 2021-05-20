@@ -130,13 +130,16 @@ void moveA(Ant *a, Case *c1, Case *c2){
 float norme(Coordonate c){
     return sqrt(float(c.getLig() * c.getLig() + c.getCol() *c.getCol()));
 }
-// a modif
 float distancePoint(Coordonate c1,  Coordonate c2){
     return sqrt(float((c1.getLig()-c2.getLig()) * (c1.getLig()-c2.getLig()) + (c1.getCol()-c2.getCol()) *(c1.getCol()-c2.getCol())));
 }
 bool closerN(Case *c1, Case *c2,Case *nest){
     if(nest->hasNest() == false) throw std::string("you need to have a nest on this case");
     return distancePoint(c1->getCoord(),nest->getCoord())<=distancePoint(c2->getCoord(),nest->getCoord());
+}
+
+bool operator==(Case c1,Case c2){
+    return (c1.hasSugar() == c2.hasSugar() && c1.hasNest() ==c2.hasNest() && c1.getCoord() == c2.getCoord() && c1.getPheroS() == c2.getPheroS());
 }
 
 

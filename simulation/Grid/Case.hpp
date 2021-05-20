@@ -51,7 +51,7 @@ void moveA(Ant *a, Case *c1, Case *c2) ;
 float norme(Coordonate c);
 float distancePoint(Coordonate c1,  Coordonate c2);
 bool closerN(Case *c1, Case *c2,Case *nest);
-
+bool operator ==(Case c1,Case c2);
 
 
 
