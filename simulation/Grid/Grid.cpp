@@ -157,4 +157,6 @@ void iniGrid(Grid &g, EnsCoord coordN, EnsCoord coordS, std::vector<Ant *> a){
     g.linearisePheroN();
 }
 
-
+int Grid::getSide(){
+    return side;
+}

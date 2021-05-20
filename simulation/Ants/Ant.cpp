@@ -24,4 +24,3 @@ void Ant::laySugar(){
 void Ant::move(Coordonate c){
 	this->coord =c;
 }
-	

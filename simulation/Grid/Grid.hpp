@@ -22,6 +22,8 @@ class Grid{
         int getId(Case c);
         
     public:
+        int getSide();
+        
         //the side is the width and height
         Grid(int side);
         Case getCase(int col, int lig) const;
